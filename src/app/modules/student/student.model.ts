@@ -1,4 +1,4 @@
-import { Schema, model, connect } from 'mongoose';
+import { Schema, model } from 'mongoose';
 
 import {
   TGuardian,
@@ -54,4 +54,4 @@ const studentSchema = new Schema<TStudent>({
 
 // 3. Create a Model.
 
-const Student = model<TStudent>('Student', studentSchema);
+export const Student = model<TStudent>('Student', studentSchema);
