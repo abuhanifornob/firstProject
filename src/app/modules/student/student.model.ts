@@ -37,19 +37,48 @@ const localGuardinSchema = new Schema<TLocalGuardian>({
 });
 
 const studentSchema = new Schema<TStudent>({
-  id: { type: String },
-  name: userNameSchema,
-  gender: ['male', 'female'],
-  dateOfBirth: { type: String },
-  email: { type: String, required: true },
+  id: { type: String, required: [true, 'ID is Requred'], unique: true },
+  name: {
+    type: userNameSchema,
+    required: [true, 'Name is Required'],
+  },
+  gender: {
+    type: String,
+    enum: {
+      values: ['male', 'female', 'other'],
+      message: '{VALUE} is not supported',
+    },
+    required: [true, 'Gender is Requred'],
+  },
+  dateOfBirth: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
   contactNo: { type: String, required: true },
   emergencyContactNo: { type: String, required: true },
-  bloodGroup: ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'],
+  bloodGroup: {
+    type: String,
+    enum: {
+      values: ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'],
+      message: '{VALUE} is not supported',
+    },
+  },
   presentAddress: { type: String, required: true },
-  guardian: guardianSchema,
-  localGuardian: localGuardinSchema,
-  profileImg: { type: String },
-  isActive: ['active', 'blocked'],
+  guardian: {
+    type: guardianSchema,
+    required: true,
+  },
+  localGuardian: {
+    type: localGuardinSchema,
+    required: true,
+  },
+  profileImg: { type: String, required: true },
+  isActive: {
+    type: String,
+    enum: {
+      values: ['active', 'blocked'],
+      message: '{VALUE} is not supported',
+    },
+    default: 'active',
+  },
 });
 
 // 3. Create a Model.
