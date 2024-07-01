@@ -14,10 +14,11 @@ const createStudent = async (req: Request, res: Response) => {
       message: 'Student Create Successfuly',
       data: result,
     });
-  } catch (error) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
     res.status(500).json({
       success: false,
-      message: 'Something Went Wrong',
+      message: error.message || 'Something Went Wrong',
       error: error,
     });
   }
@@ -31,11 +32,12 @@ const getAllStudents = async (req: Request, res: Response) => {
       message: 'Student retrive Successfuly',
       data: result,
     });
-  } catch (error) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (err: any) {
     res.status(500).json({
       success: false,
-      message: 'Something Went Wrong',
-      error: error,
+      message: err.message,
+      error: err,
     });
   }
 };
@@ -56,9 +58,29 @@ const getSingleStudents = async (req: Request, res: Response) => {
     });
   }
 };
+const deleteStudent = async (req: Request, res: Response) => {
+  try {
+    const { studentID } = req.params;
+    console.log(studentID);
+    const result = await StudentServices.deleteStudentFromDB(studentID);
+    res.status(200).json({
+      success: true,
+      message: 'Student Deleted Successfuly',
+      data: result,
+    });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: 'Something Went Wrong',
+      error: err,
+    });
+  }
+};
 
 export const StudentController = {
   createStudent,
   getAllStudents,
   getSingleStudents,
+  deleteStudent,
 };

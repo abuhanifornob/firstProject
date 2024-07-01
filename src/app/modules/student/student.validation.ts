@@ -54,6 +54,7 @@ const localGuardinValidateSchema = z.object({
 // Define the Zod schema for the studentSchema
 const studentValidateSchema = z.object({
   id: z.string().min(1, { message: 'ID is required' }),
+  password: z.string().min(1, { message: 'pass is required' }),
   name: userNameValidateSchema,
   gender: z.enum(['male', 'female', 'other'], {
     errorMap: () => ({ message: 'Gender is not supported' }),
@@ -82,6 +83,7 @@ const studentValidateSchema = z.object({
       errorMap: () => ({ message: 'Status is not supported' }),
     })
     .default('active'),
+  isDeleted: z.boolean(),
 });
 
 export default studentValidateSchema;

@@ -2,7 +2,12 @@ import { Schema, model } from 'mongoose';
 
 import validator from 'validator';
 
+import bcrypt from 'bcrypt';
+
+import config from '../../config';
+
 import {
+  StudentModel,
   TGuardian,
   TLocalGuardian,
   TStudent,
@@ -53,8 +58,15 @@ const localGuardinSchema = new Schema<TLocalGuardian>({
   address: { type: String, required: true },
 });
 
-const studentSchema = new Schema<TStudent>({
+const studentSchema = new Schema<TStudent, StudentModel>({
   id: { type: String, required: [true, 'ID is Requred'], unique: true },
+  password: {
+    type: String,
+    required: [true, 'password is Requred'],
+    unique: true,
+    maxlength: [20, "Don't accept more then 20 charecter"],
+    min: [7, "Don't accept less then 7 charecter"],
+  },
   name: {
     type: userNameSchema,
     required: [true, 'Name is Required'],
@@ -105,8 +117,55 @@ const studentSchema = new Schema<TStudent>({
     },
     default: 'active',
   },
+  isDeleted: {
+    type: Boolean,
+    default: false,
+  },
 });
+
+// middlewear or Hooks
+
+// Pre Hooks
+studentSchema.pre('save', async function (next) {
+  // eslint-disable-next-line @typescript-eslint/no-this-alias
+  const user = this;
+  user.password = await bcrypt.hash(
+    user.password,
+    Number(config.bcrypt_salt_rounds),
+  );
+  next();
+});
+
+//  Post Hooks
+
+studentSchema.post('save', async function (doc, next) {
+  doc.password = '';
+  next();
+});
+
+//.............Quary Hooks
+
+studentSchema.pre('find', async function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
+
+studentSchema.pre('findOne', async function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
+
+// .... Static Method.....
+studentSchema.statics.isUserExists = async function (id: string) {
+  const existsUser = await Student.findOne({ id });
+  return existsUser;
+};
+// For Custom Instance Method
+// studentSchema.methods.isUserExist = async function (id: string) {
+//   const existingUser = await Student.findOne({ id });
+//   return existingUser;
+// };
 
 // 3. Create a Model.
 
-export const Student = model<TStudent>('Student', studentSchema);
+export const Student = model<TStudent, StudentModel>('Student', studentSchema);
