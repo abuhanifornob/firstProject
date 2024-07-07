@@ -2,9 +2,7 @@ import { Schema, model } from 'mongoose';
 
 import validator from 'validator';
 
-import bcrypt from 'bcrypt';
-
-import config from '../../config';
+import { User } from '../user/user.model';
 
 import {
   StudentModel,
@@ -60,12 +58,11 @@ const localGuardinSchema = new Schema<TLocalGuardian>({
 
 const studentSchema = new Schema<TStudent, StudentModel>({
   id: { type: String, required: [true, 'ID is Requred'], unique: true },
-  password: {
-    type: String,
-    required: [true, 'password is Requred'],
+  user: {
+    type: Schema.Types.ObjectId,
+    required: [true, 'User is Requred'],
     unique: true,
-    maxlength: [20, "Don't accept more then 20 charecter"],
-    min: [7, "Don't accept less then 7 charecter"],
+    ref: User,
   },
   name: {
     type: userNameSchema,
@@ -109,14 +106,7 @@ const studentSchema = new Schema<TStudent, StudentModel>({
     required: true,
   },
   profileImg: { type: String, required: true },
-  isActive: {
-    type: String,
-    enum: {
-      values: ['active', 'blocked'],
-      message: '{VALUE} is not supported',
-    },
-    default: 'active',
-  },
+
   isDeleted: {
     type: Boolean,
     default: false,
@@ -125,16 +115,15 @@ const studentSchema = new Schema<TStudent, StudentModel>({
 
 // middlewear or Hooks
 
-// Pre Hooks
-studentSchema.pre('save', async function (next) {
-  // eslint-disable-next-line @typescript-eslint/no-this-alias
-  const user = this;
-  user.password = await bcrypt.hash(
-    user.password,
-    Number(config.bcrypt_salt_rounds),
-  );
-  next();
-});
+// // Pre Hooks
+// studentSchema.pre('save', async function (next) {
+//   // eslint-disable-next-line @typescript-eslint/no-this-alias
+//   const users = this;
+//   console.log(users.password);
+//   users.password = await bcrypt.hash(users.password, 12);
+//   console.log(users.password);
+//   next();
+// });
 
 //  Post Hooks
 
@@ -154,8 +143,6 @@ studentSchema.pre('findOne', async function (next) {
   this.find({ isDeleted: { $ne: true } });
   next();
 });
-
-
 
 // .... Static Method.....
 studentSchema.statics.isUserExists = async function (id: string) {
