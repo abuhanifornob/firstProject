@@ -155,6 +155,8 @@ studentSchema.pre('findOne', async function (next) {
   next();
 });
 
+
+
 // .... Static Method.....
 studentSchema.statics.isUserExists = async function (id: string) {
   const existsUser = await Student.findOne({ id });
