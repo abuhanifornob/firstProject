@@ -1,24 +1,28 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
+
+import { StatusCodes } from 'http-status-codes';
+
+import sendResponse from '../../utils/sendResponse';
 
 import { UserServices } from './user.services';
 
-const createStudent = async (req: Request, res: Response) => {
+const createStudent = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const { student: studentData, password } = req.body;
 
     const result = await UserServices.createSudentIntoDB(studentData, password);
-    res.status(200).json({
+    sendResponse(res, {
+      statusCode: StatusCodes.OK,
       success: true,
-      message: 'Student Create Successfuly',
+      message: 'User Create Successfuly',
       data: result,
     });
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      message: error.message || 'Something Went Wrong',
-      error: error,
-    });
+  } catch (err) {
+    next(err);
   }
 };
 

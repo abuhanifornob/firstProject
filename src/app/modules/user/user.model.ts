@@ -1,5 +1,9 @@
 import { model, Schema } from 'mongoose';
 
+import bcrypt from 'bcrypt';
+
+import config from '../../config';
+
 import { TUsers } from './user.interface';
 
 const userSchema = new Schema<TUsers>(
@@ -40,5 +44,26 @@ const userSchema = new Schema<TUsers>(
     timestamps: true,
   },
 );
+
+// middlewear or Hooks
+
+// // Pre Hooks
+userSchema.pre('save', async function (next) {
+  // eslint-disable-next-line @typescript-eslint/no-this-alias
+  const user = this;
+  user.password = await bcrypt.hash(
+    user.password,
+    Number(config.bcrypt_salt_rounds),
+  );
+
+  next();
+});
+
+//  Post Hooks
+
+userSchema.post('save', async function (doc, next) {
+  doc.password = '';
+  next();
+});
 
 export const User = model<TUsers>('User', userSchema);

@@ -22,9 +22,7 @@ const createSudentIntoDB = async (payload: TStudent, password: string) => {
   if (Object.keys(result).length) {
     payload.id = result.id;
     payload.user = result._id;
-
     const newStudent = await Student.create(payload);
-    console.log(newStudent);
     return newStudent;
   }
 };
