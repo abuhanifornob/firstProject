@@ -14,8 +14,10 @@ const createSudentIntoDB = async (payload: TStudent, password: string) => {
   userData.password = password;
   // set Role
   userData.role = 'student';
+
   // create Manual ID
   userData.id = '2030200001';
+
   const result = await User.create(userData);
 
   // check User Create

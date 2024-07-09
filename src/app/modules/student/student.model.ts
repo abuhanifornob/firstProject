@@ -2,6 +2,7 @@ import { Schema, model } from 'mongoose';
 
 import validator from 'validator';
 
+import { AcademicSemister } from '../academicSemester/academicSemester.model';
 import { User } from '../user/user.model';
 
 import {
@@ -106,10 +107,9 @@ const studentSchema = new Schema<TStudent, StudentModel>({
     required: true,
   },
   profileImg: { type: String, required: true },
-
-  isDeleted: {
-    type: Boolean,
-    default: false,
+  admissionSemester: {
+    type: Schema.Types.ObjectId,
+    ref: AcademicSemister,
   },
 });
 

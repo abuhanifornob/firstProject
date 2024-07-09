@@ -12,5 +12,12 @@ router.post(
   validateRequet(academicSemesterValidation.academicSemesterZodValidationScema),
   AcademicSemesterController.createAcademicSemester,
 );
+router.get(
+  '/:semesterId',
+  AcademicSemesterController.getSingalAcademicSemester,
+);
+router.get('/', AcademicSemesterController.getAllAcademicSemester);
+
+router.patch('/:semesterId', AcademicSemesterController.updateAcademicSemester);
 
 export const AcademicSemesterRouters = router;

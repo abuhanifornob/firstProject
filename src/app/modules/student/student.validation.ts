@@ -82,11 +82,7 @@ const studentValidateSchema = z.object({
       guardian: guardianValidateSchema,
       localGuardian: localGuardinValidateSchema,
       profileImg: z.string().min(1, { message: 'Profile Image is required' }),
-      isActive: z
-        .enum(['active', 'blocked'], {
-          errorMap: () => ({ message: 'Status is not supported' }),
-        })
-        .default('active'),
+      admissionSemester: z.string(),
     }),
   }),
 });
