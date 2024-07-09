@@ -53,36 +53,44 @@ const localGuardinValidateSchema = z.object({
 
 // Define the Zod schema for the studentSchema
 const studentValidateSchema = z.object({
-  id: z.string().min(1, { message: 'ID is required' }),
+  body: z.object({
+    student: z.object({
+      id: z.string().min(1, { message: 'ID is required' }),
 
-  name: userNameValidateSchema,
-  gender: z.enum(['male', 'female', 'other'], {
-    errorMap: () => ({ message: 'Gender is not supported' }),
+      name: userNameValidateSchema,
+      gender: z.enum(['male', 'female', 'other'], {
+        errorMap: () => ({ message: 'Gender is not supported' }),
+      }),
+      dateOfBirth: z.string().min(1, { message: 'Date of Birth is required' }),
+      email: z
+        .string()
+        .email({ message: 'Email format is invalid' })
+        .min(1, { message: 'Email is required' }),
+      contactNo: z.string().min(1, { message: 'Contact No is required' }),
+      emergencyContactNo: z
+        .string()
+        .min(1, { message: 'Emergency Contact No is required' }),
+      bloodGroup: z.enum(['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'], {
+        errorMap: () => ({ message: 'Blood Group is not supported' }),
+      }),
+      presentAddress: z
+        .string()
+        .min(1, { message: 'Present Address is required' }),
+      permanentAddress: z
+        .string()
+        .min(1, { message: 'Present Address is required' }),
+      guardian: guardianValidateSchema,
+      localGuardian: localGuardinValidateSchema,
+      profileImg: z.string().min(1, { message: 'Profile Image is required' }),
+      isActive: z
+        .enum(['active', 'blocked'], {
+          errorMap: () => ({ message: 'Status is not supported' }),
+        })
+        .default('active'),
+    }),
   }),
-  dateOfBirth: z.string().min(1, { message: 'Date of Birth is required' }),
-  email: z
-    .string()
-    .email({ message: 'Email format is invalid' })
-    .min(1, { message: 'Email is required' }),
-  contactNo: z.string().min(1, { message: 'Contact No is required' }),
-  emergencyContactNo: z
-    .string()
-    .min(1, { message: 'Emergency Contact No is required' }),
-  bloodGroup: z.enum(['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'], {
-    errorMap: () => ({ message: 'Blood Group is not supported' }),
-  }),
-  presentAddress: z.string().min(1, { message: 'Present Address is required' }),
-  permanentAddress: z
-    .string()
-    .min(1, { message: 'Present Address is required' }),
-  guardian: guardianValidateSchema,
-  localGuardian: localGuardinValidateSchema,
-  profileImg: z.string().min(1, { message: 'Profile Image is required' }),
-  isActive: z
-    .enum(['active', 'blocked'], {
-      errorMap: () => ({ message: 'Status is not supported' }),
-    })
-    .default('active'),
 });
 
-export default studentValidateSchema;
+export const studentValidats = {
+  studentValidateSchema,
+};

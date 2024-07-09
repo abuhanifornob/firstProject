@@ -113,25 +113,6 @@ const studentSchema = new Schema<TStudent, StudentModel>({
   },
 });
 
-// middlewear or Hooks
-
-// // Pre Hooks
-// studentSchema.pre('save', async function (next) {
-//   // eslint-disable-next-line @typescript-eslint/no-this-alias
-//   const users = this;
-//   console.log(users.password);
-//   users.password = await bcrypt.hash(users.password, 12);
-//   console.log(users.password);
-//   next();
-// });
-
-//  Post Hooks
-
-studentSchema.post('save', async function (doc, next) {
-  doc.password = '';
-  next();
-});
-
 //.............Quary Hooks
 
 studentSchema.pre('find', async function (next) {

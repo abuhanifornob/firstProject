@@ -15,6 +15,3 @@ async function main() {
   }
 }
 main();
-
-// username: hanifcse90
-//password: gn945hPBTS3RIc92
