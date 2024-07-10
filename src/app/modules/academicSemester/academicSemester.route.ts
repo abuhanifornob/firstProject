@@ -18,6 +18,12 @@ router.get(
 );
 router.get('/', AcademicSemesterController.getAllAcademicSemester);
 
-router.patch('/:semesterId', AcademicSemesterController.updateAcademicSemester);
+router.patch(
+  '/:semesterId',
+  validateRequet(
+    academicSemesterValidation.updateAcademicSemeterValidataionSchema,
+  ),
+  AcademicSemesterController.updateAcademicSemester,
+);
 
 export const AcademicSemesterRouters = router;

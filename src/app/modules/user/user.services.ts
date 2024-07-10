@@ -1,9 +1,11 @@
 import config from '../../config';
+import { AcademicSemister } from '../academicSemester/academicSemester.model';
 import { TStudent } from '../student/student.interface';
 import { Student } from '../student/student.model';
 
 import { TUsers } from './user.interface';
 import { User } from './user.model';
+import { generateStudnetId } from './user.utils';
 
 const createSudentIntoDB = async (payload: TStudent, password: string) => {
   const userData: Partial<TUsers> = {};
@@ -15,8 +17,11 @@ const createSudentIntoDB = async (payload: TStudent, password: string) => {
   // set Role
   userData.role = 'student';
 
+  const admissionSemester = await AcademicSemister.findById(
+    payload.admissionSemester,
+  );
   // create Manual ID
-  userData.id = '2030200001';
+  userData.id = await generateStudnetId(admissionSemester);
 
   const result = await User.create(userData);
 

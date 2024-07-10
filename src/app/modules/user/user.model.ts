@@ -10,6 +10,7 @@ const userSchema = new Schema<TUsers>(
   {
     id: {
       type: String,
+      unique: true,
     },
     password: {
       type: String,
