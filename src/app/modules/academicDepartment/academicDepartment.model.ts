@@ -17,6 +17,27 @@ const academicDepartmentSchema = new Schema<TAcademicDepartment>({
   },
 });
 
+academicDepartmentSchema.pre('save', async function (next) {
+  const isExitsDepartmentName = await AcademicDepartment.findOne({
+    name: this.name,
+  });
+  if (isExitsDepartmentName) {
+    throw new Error(`${this.name} Department is Already Exits`);
+  }
+  next();
+});
+
+academicDepartmentSchema.pre('findOne', async function (next) {
+  const quary = this.getQuery();
+  const isExistsId = await AcademicDepartment.findById(quary._id);
+  console.log(isExistsId);
+
+  //   if (!isExistsId) {
+  //     throw new Error(`This id is not Found Please Correct Id`);
+  //   }
+  next();
+});
+
 export const AcademicDepartment = model<TAcademicDepartment>(
   'AcademicDepartment',
   academicDepartmentSchema,
