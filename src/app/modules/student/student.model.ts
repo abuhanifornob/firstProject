@@ -87,7 +87,7 @@ const studentSchema = new Schema<TStudent, StudentModel>({
       message: '{VALUE} is Email format',
     },
   },
-  contactNo: { type: String, required: true },
+  contactNo: { type: String, required: true, unique: true },
   emergencyContactNo: { type: String, required: true },
   bloodGroup: {
     type: String,
