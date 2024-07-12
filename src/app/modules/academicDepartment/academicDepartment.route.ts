@@ -9,9 +9,9 @@ const router = express.Router();
 
 router.post(
   '/create-academic-department',
-  validateRequet(
-    AcademicDepartmentValidation.createAcademicDepartmentValidationSchema,
-  ),
+  // validateRequet(
+  //   AcademicDepartmentValidation.createAcademicDepartmentValidationSchema,
+  // ),
   AcademicDepartmentController.createAcademicDepartment,
 );
 router.get(

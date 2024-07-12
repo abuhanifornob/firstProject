@@ -67,6 +67,10 @@ const deleteStudentFromDB = async (id: string) => {
 };
 
 const updateStudentIntoDB = async (id: string, payload: Partial<TStudent>) => {
+  const idExists = await Student.isUserExists(id);
+  if (!idExists) {
+    throw new AppError(StatusCodes.NOT_FOUND, 'Student id is Not Exits');
+  }
   const { name, guardian, localGuardian, ...remainingData } = payload;
 
   const modifiedData: Record<string, unknown> = {

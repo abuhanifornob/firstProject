@@ -10,7 +10,7 @@ const router = express.Router();
 router.delete('/:studentID', StudentController.deleteStudent);
 router.patch(
   '/:studentID',
-  //   validateRequet(studentValidats.updateStudentZodValidateSchema),
+  validateRequet(studentValidats.updateStudentZodValidateSchema),
   StudentController.updateStudent,
 );
 router.get('/:studentID', StudentController.getSingleStudents);

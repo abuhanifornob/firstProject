@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-unused-vars */
 import { StatusCodes } from 'http-status-codes';
 
 import catchAsync from '../../utils/catchAsync';
@@ -35,6 +37,7 @@ const deleteStudent = catchAsync(async (req, res, next) => {
     data: result,
   });
 });
+
 const updateStudent = catchAsync(async (req, res, next) => {
   const { studentID } = req.params;
   const { student } = req.body;

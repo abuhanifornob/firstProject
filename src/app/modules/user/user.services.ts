@@ -22,6 +22,7 @@ const createSudentIntoDB = async (payload: TStudent, password: string) => {
   // set Role
   userData.role = 'student';
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const admissionSemester: any = await AcademicSemister.findById(
     payload.admissionSemester,
   );

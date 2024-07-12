@@ -119,7 +119,7 @@ const updateLocalGuardinZodValidateSchema = z.object({
 const studentValidateSchema = z.object({
   body: z.object({
     student: z.object({
-      id: z.string(),
+      id: z.string().optional(),
 
       name: userNameValidateSchema,
       gender: z.enum(['male', 'female', 'other'], {
