@@ -1,5 +1,11 @@
 import { model, Schema } from 'mongoose';
 
+import { number } from 'zod';
+
+import { StatusCodes } from 'http-status-codes';
+
+import AppError from '../../errors/appErrors';
+
 import {
   AcademicSemesterCode,
   AcademicSemesterName,
@@ -45,7 +51,10 @@ academicSemesterSchema.pre('save', async function (next) {
     year: this.year,
   });
   if (isExitsAcademicSemesterName) {
-    throw new Error('Academic Semeter is Alrey Exists');
+    throw new AppError(
+      StatusCodes.NOT_FOUND,
+      'Academic Semeter is Alrey Exists',
+    );
   }
   next();
 });

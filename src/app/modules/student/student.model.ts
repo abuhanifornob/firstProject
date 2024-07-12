@@ -2,6 +2,7 @@ import { Schema, model } from 'mongoose';
 
 import validator from 'validator';
 
+import { AcademicDepartment } from '../academicDepartment/academicDepartment.model';
 import { AcademicSemister } from '../academicSemester/academicSemester.model';
 import { User } from '../user/user.model';
 
@@ -12,6 +13,7 @@ import {
   TStudent,
   TUserName,
 } from './student.interface';
+
 const userNameSchema = new Schema<TUserName>({
   firstName: {
     type: String,
@@ -110,6 +112,10 @@ const studentSchema = new Schema<TStudent, StudentModel>({
   admissionSemester: {
     type: Schema.Types.ObjectId,
     ref: AcademicSemister,
+  },
+  academicDepartment: {
+    type: Schema.Types.ObjectId,
+    ref: AcademicDepartment,
   },
 });
 

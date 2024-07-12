@@ -27,16 +27,16 @@ academicDepartmentSchema.pre('save', async function (next) {
   next();
 });
 
-academicDepartmentSchema.pre('findOne', async function (next) {
-  const quary = this.getQuery();
-  const isExistsId = await AcademicDepartment.findById(quary._id);
-  console.log(isExistsId);
+// academicDepartmentSchema.pre('findOne', async function (next) {
+//   const quary = this.getQuery();
+//   const isExistsId = await AcademicDepartment.findById(quary._id);
+//   console.log(isExistsId);
 
-  //   if (!isExistsId) {
-  //     throw new Error(`This id is not Found Please Correct Id`);
-  //   }
-  next();
-});
+//   //   if (!isExistsId) {
+//   //     throw new Error(`This id is not Found Please Correct Id`);
+//   //   }
+//   next();
+// });
 
 export const AcademicDepartment = model<TAcademicDepartment>(
   'AcademicDepartment',
