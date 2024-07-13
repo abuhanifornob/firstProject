@@ -1,5 +1,7 @@
 import express from 'express';
 
+import { createAdminValidationSchema } from '../admin/admin.validation';
+import { createFacultyValidationSchema } from '../faculty/faculty.validation';
 import { studentValidats } from '../student/student.validation';
 import validateRequet from '../../middleware/validateRequest';
 
@@ -13,4 +15,15 @@ route.post(
   UserController.createStudent,
 );
 
+route.post(
+  '/create-faculty',
+  validateRequet(createFacultyValidationSchema),
+  UserController.createFaculty,
+);
+
+route.post(
+  '/create-admin',
+  validateRequet(createAdminValidationSchema),
+  UserController.createAdmin,
+);
 export const UserRouters = route;
