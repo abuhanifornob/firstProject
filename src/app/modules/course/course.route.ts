@@ -22,17 +22,17 @@ router.patch(
 
 router.delete('/:id', CourseControllers.deleteCourse);
 
-// router.put(
-//   '/:courseId/assign-faculties',
-//   validateRequest(CourseValidations.facultiesWithCourseValidationSchema),
-//   CourseControllers.assignFacultiesWithCourse,
-// );
+router.put(
+  '/:courseId/assign-faculties',
+  validateRequet(CourseValidations.facultiesWithCourseValidationSchema),
+  CourseControllers.assignFacultiesWithCourse,
+);
 
-// router.delete(
-//   '/:courseId/remove-faculties',
-//   validateRequest(CourseValidations.facultiesWithCourseValidationSchema),
-//   CourseControllers.removeFacultiesFromCourse,
-// );
+router.delete(
+  '/:courseId/remove-faculties',
+  validateRequet(CourseValidations.facultiesWithCourseValidationSchema),
+  CourseControllers.removeFacultiesFromCourse,
+);
 
 router.get('/', CourseControllers.getAllCourses);
 

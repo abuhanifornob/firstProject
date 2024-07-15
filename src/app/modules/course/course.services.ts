@@ -6,8 +6,8 @@ import QueryBuilder from '../../builder/QueryBuilder';
 import AppError from '../../errors/appErrors';
 
 import { CourseSearchableFields } from './course.constant';
-import { TCourse } from './course.interface';
-import { Course } from './course.model';
+import { TCourse, TCoursefaculty } from './course.interface';
+import { Course, CourseFaculty } from './course.model';
 
 const createCourseIntoDB = async (payload: TCourse) => {
   const result = await Course.create(payload);
@@ -112,6 +112,38 @@ const updateCourseIntoDB = async (id: string, payload: Partial<TCourse>) => {
     throw new AppError(StatusCodes.BAD_REQUEST, 'Course Update Failds');
   }
 };
+const assignFacultiesWithCourseIntoDB = async (
+  id: string,
+  payload: Partial<TCoursefaculty>,
+) => {
+  const result = await CourseFaculty.findByIdAndUpdate(
+    id,
+    {
+      course: id,
+      $addToSet: { faculties: { $each: payload } },
+    },
+    {
+      upsert: true,
+      new: true,
+    },
+  );
+  return result;
+};
+const removeFacultiesFromCourseFromDB = async (
+  id: string,
+  payload: Partial<TCoursefaculty>,
+) => {
+  const result = await CourseFaculty.findByIdAndUpdate(
+    id,
+    {
+      $pull: { faculties: { $in: payload } },
+    },
+    {
+      new: true,
+    },
+  );
+  return result;
+};
 
 export const CourseServices = {
   getAllCourseFromDB,
@@ -119,4 +151,6 @@ export const CourseServices = {
   getSinglecoureFromDB,
   deleteCourseFromDB,
   updateCourseIntoDB,
+  assignFacultiesWithCourseIntoDB,
+  removeFacultiesFromCourseFromDB,
 };
