@@ -1,7 +1,5 @@
 import { model, Schema } from 'mongoose';
 
-import { number } from 'zod';
-
 import { StatusCodes } from 'http-status-codes';
 
 import AppError from '../../errors/appErrors';
